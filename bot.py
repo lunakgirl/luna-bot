@@ -33,11 +33,17 @@ PAY = {
 aguardando = {}
 
 def download_drive(file_id, output):
-    url = f"https://drive.google.com/uc?id={file_id}"
     try:
+        # Tenta baixar pelo ID direto (funciona com arquivo grande)
+        gdown.download(id=file_id, output=output, quiet=False)
+        if os.path.exists(output):
+            return True
+        # Se falhar, tenta com url
+        url = f"https://drive.google.com/uc?id={file_id}"
         gdown.download(url, output, quiet=False, fuzzy=True)
-        return True
-    except:
+        return os.path.exists(output)
+    except Exception as e:
+        print(f"Erro download {file_id}: {e}")
         return False
 
 @bot.message_handler(commands=['start'])
