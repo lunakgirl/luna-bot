@@ -8,6 +8,8 @@ from threading import Thread
 bot = telebot.TeleBot(config.BOT_TOKEN)
 ADMIN_ID = 7683621526
 
+PREVIEW_LINK = "https://t.me/+BJNDuY95jB83NWVh"
+
 DRIVE = {
     "sonho": "1xaRU_FSu5esi-l_7Ii1ppGFrLUds9vtj",
     "sonho2": "1444QDpTtfE_PSeQpx49R18j2lgFy_bV3",
@@ -36,10 +38,11 @@ def download_drive(file_id, output):
     except:
         return False
 
-# 3 BOTÕES, 1 PRA CADA PACK
+# 3 BOTÕES + BOTÃO DE PRÉVIAS NO TOPO
 def teclado_inicial():
     markup = telebot.types.InlineKeyboardMarkup(row_width=1)
     markup.add(
+        telebot.types.InlineKeyboardButton("📸 Veja minhas Fotos Grátis", url=PREVIEW_LINK),
         telebot.types.InlineKeyboardButton("🔥 PACK SONHO - R$10 (2 EM 1)", callback_data="pack_sonho"),
         telebot.types.InlineKeyboardButton("💦 PACK TOTAL - R$25 (66 FOTOS)", callback_data="pack_total"),
         telebot.types.InlineKeyboardButton("🎥 PACK VIDEOS - R$20 (6 VIDEOS)", callback_data="pack_videos")
@@ -49,9 +52,10 @@ def teclado_inicial():
 def teclado_pagamento(pack):
     markup = telebot.types.InlineKeyboardMarkup(row_width=1)
     markup.add(
+        telebot.types.InlineKeyboardButton("📸 Veja minhas Fotos Grátis", url=PREVIEW_LINK),
         telebot.types.InlineKeyboardButton("💳 PASSO 1: CLICAR AQUI PARA PAGAR", url=PAY.get(pack, "")),
         telebot.types.InlineKeyboardButton("📸 PASSO 2: JÁ PAGUEI - ENVIAR COMPROVANTE", callback_data=f"como_{pack}"),
-        telebot.types.InlineKeyboardButton("⬅️ VOLTAR", callback_data="voltar")
+        telebot.types.InlineKeyboardButton("⬅ VOLTAR", callback_data="voltar")
     )
     return markup
 
@@ -91,9 +95,9 @@ def botoes(c):
                 "😏 Posições que você ama\n\n"
                 "Esse é meu preferido amor, você vai ver tudo de mim bem molhadinha só pra você...\n\n"
                 "👇 *COMO COMPRAR:*\n"
-                "1️⃣ Clique em *PAGAR* abaixo\n"
-                "2️⃣ Pague no Pix\n"
-                "3️⃣ Clique em *JÁ PAGUEI* e mande o print"
+                "1⃣ Clique em *PAGAR* abaixo\n"
+                "2⃣ Pague no Pix\n"
+                "3⃣ Clique em *JÁ PAGUEI* e mande o print"
             )
         elif pack == "total":
             desc = (
@@ -105,11 +109,11 @@ def botoes(c):
                 "💦 Gozando só de pensar em você\n\n"
                 "Quer me ver TODA né safado? Tudo que é seu...\n\n"
                 "👇 *COMO COMPRAR:*\n"
-                "1️⃣ Clique em *PAGAR*\n"
-                "2️⃣ Pague\n"
-                "3️⃣ Clique em *JÁ PAGUEI* e mande o print"
+                "1⃣ Clique em *PAGAR*\n"
+                "2⃣ Pague\n"
+                "3⃣ Clique em *JÁ PAGUEI* e mande o print"
             )
-        else: # videos
+        else:
             desc = (
                 "🎥 *PACK VIDEOS - R$20*\n"
                 "_6 VIDEOS EXCLUSIVOS_\n\n"
@@ -119,16 +123,16 @@ def botoes(c):
                 "💦 Falando putaria pra você bater junto\n\n"
                 "Quer me ver gozando amor? Vai gozar junto comigo...\n\n"
                 "👇 *COMO COMPRAR:*\n"
-                "1️⃣ Clique em *PAGAR*\n"
-                "2️⃣ Pague\n"
-                "3️⃣ Clique em *JÁ PAGUEI* e mande o print"
+                "1⃣ Clique em *PAGAR*\n"
+                "2⃣ Pague\n"
+                "3⃣ Clique em *JÁ PAGUEI* e mande o print"
             )
 
         bot.edit_message_text(desc, c.message.chat.id, c.message.message_id, parse_mode="Markdown", reply_markup=teclado_pagamento(pack))
         return
 
     if c.data.startswith("como_"):
-        bot.send_message(c.message.chat.id, "📸 *ENVIO DO COMPROVANTE:*\n\n1️⃣ Tira print do Pix\n2️⃣ Clica no clips 📎 aqui embaixo\n3️⃣ Manda a foto aqui\n\nJá vou te mandar peladinha 💦", parse_mode="Markdown")
+        bot.send_message(c.message.chat.id, "📸 *ENVIO DO COMPROVANTE:*\n\n1⃣ Tira print do Pix\n2⃣ Clica no clips 📎 aqui embaixo\n3⃣ Manda a foto aqui\n\nJá vou te mandar peladinha 💦", parse_mode="Markdown")
         return
 
     if c.data.startswith("ok:") or c.data.startswith("no:"):
